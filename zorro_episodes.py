@@ -38,16 +38,21 @@ def countHeusticTDD(events):
 
 def main(argv):
 	baseUri = "C:\\Users\\dfucci\\Desktop\\SQAT\\return box\\"
-	subjectUri = baseUri + argv
+	subjectUri = baseUri + argv + "\\"
 	if os.path.exists(subjectUri):
-		cats  = parseEpisodes("C:\Users\dfucci\Desktop\SQAT\zorroEpisodes.txt")
-		denominator = len(cats)
-		res = countHeusticTDD(cats)
-		numerator = float(res["TF"])
-		print "Conformance level: {0:.0f}%".format(numerator/denominator*100)
+		taskDirs = os.listdir(subjectUri)
+		for taskDir in taskDirs:
+			zorroDirs=os.listdir(subjectUri + taskDir + "\\" + ".besouro\\")
+			for zorroDir in zorroDirs:
+				zorroFile = zorroDirs + "\\" + "zorroEpisodes.txt"
+				cats  = parseEpisodes(zorroFile)
+				denominator = len(cats)
+				res = countHeusticTDD(cats)
+				numerator = float(res["TF"])
+				print "Conformance level: {0:.0f}%".format(numerator/denominator*100)
 	else:
 		print "Cannot find directory"
 
-		
+
 if __name__ == "__main__":
 	main(sys.argv[1])
