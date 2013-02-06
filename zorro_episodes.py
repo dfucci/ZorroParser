@@ -1,3 +1,5 @@
+import sys
+
 def parseEpisodes(path):
 	with open(path) as f:
 		content = f.readlines()
@@ -34,12 +36,18 @@ def countHeusticTDD(events):
 	# 	if ev=="test-first"
 	# 		start = i
 
-def main():
-	cats  = parseEpisodes("C:\Users\dfucci\Desktop\SQAT\zorroEpisodes.txt")
-	denominator = len(cats)
-	res = countHeusticTDD(cats)
-	numerator = float(res["TF"])
-	print "Conformance level: {0:.0f}%".format(numerator/denominator*100)
+def main(argv):
+	baseUri = "C:\\Users\\dfucci\\Desktop\\SQAT\\return box\\"
+	subjectUri = baseUri + argv
+	if os.path.exists(subjectUri):
+		cats  = parseEpisodes("C:\Users\dfucci\Desktop\SQAT\zorroEpisodes.txt")
+		denominator = len(cats)
+		res = countHeusticTDD(cats)
+		numerator = float(res["TF"])
+		print "Conformance level: {0:.0f}%".format(numerator/denominator*100)
+	else:
+		print "Cannot find directory"
 
+		
 if __name__ == "__main__":
-	main()
+	main(sys.argv[1])
