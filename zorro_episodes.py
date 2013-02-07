@@ -1,8 +1,8 @@
 import sys
-
-def parseEpisodes(path):
-	with open(path) as f:
-		content = f.readlines()
+import os
+def parseEpisodes(content):
+	# with open(path) as f:
+	# 	content = f.readlines()
 	lines = [l.split() for l in content]
 	listOfCategories = [el[1] for el in lines]
 	return listOfCategories
@@ -32,27 +32,34 @@ def countHeusticTDD(events):
 	return result
 
 
-	# for i, ev in events:
-	# 	if ev=="test-first"
-	# 		start = i
 
-def main(argv):
-	baseUri = "C:\\Users\\dfucci\\Desktop\\SQAT\\return box\\"
-	subjectUri = baseUri + argv + "\\"
-	if os.path.exists(subjectUri):
-		taskDirs = os.listdir(subjectUri)
-		for taskDir in taskDirs:
-			zorroDirs=os.listdir(subjectUri + taskDir + "\\" + ".besouro\\")
-			for zorroDir in zorroDirs:
-				zorroFile = zorroDirs + "\\" + "zorroEpisodes.txt"
-				cats  = parseEpisodes(zorroFile)
-				denominator = len(cats)
-				res = countHeusticTDD(cats)
-				numerator = float(res["TF"])
+def mergeZorroEpisodes(dir):
+	buff = []
+	for zorroDir in os.listdir(dir):
+		with open(dir+zorroDir+'\\zorroEpisodes.txt') as f:
+			buff= buff + f.readlines()
+	return buff
+
+def main(subject):
+	basePath = "C:\\Users\dfucci\\Desktop\\SQAT\\return box\\"
+	subjectPath = basePath + subject + '\\'
+	print "========================="
+	for dir in os.listdir(subjectPath):
+		if os.path.isdir(subjectPath+dir+'\\.besouro\\'):
+			print dir
+			zorroDirs = subjectPath+dir+'\\.besouro\\'
+			content = mergeZorroEpisodes(zorroDirs)
+			cats  = parseEpisodes(content)
+			denominator = len(cats)
+			res = countHeusticTDD(cats)
+			numerator = float(res["TF"])
+			print "number of eposides %s" % denominator
+			if denominator > 0:
 				print "Conformance level: {0:.0f}%".format(numerator/denominator*100)
-	else:
-		print "Cannot find directory"
 
+			else:
+				print "No episodes present"
+			print "========================="
 
 if __name__ == "__main__":
 	main(sys.argv[1])
