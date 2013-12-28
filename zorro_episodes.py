@@ -36,19 +36,21 @@ def countHeusticTDD(events):
 def mergeZorroEpisodes(dir):
 	buff = []
 	for zorroDir in os.listdir(dir):
-		with open(dir+zorroDir+'\\zorroEpisodes.txt') as f:
-			buff= buff + f.readlines()
+		epdisode_file = dir+"/"+zorroDir+'/zorroEpisodes.txt'
+		if os.path.isfile(epdisode_file):
+			with open(epdisode_file) as f:
+				buff= buff + f.readlines()
 	return buff
 
-def main(subject):
-	basePath = "C:\\Users\dfucci\\Desktop\\SQAT\\return box\\"
-	subjectPath = basePath + subject + '\\'
+def main(besouro_dir):
+	#basePath = "C:\\Users\\dfucci\\Dropbox\\TOL\\PhD\\Publications\\TDD Process Conformance Relationship With Code Quality\\BSK\\"
+	#subjectPath = basePath + subject + '\\BSK\\'
 	print "========================="
-	for dir in os.listdir(subjectPath):
-		if os.path.isdir(subjectPath+dir+'\\.besouro\\'):
+	for dir in os.listdir(besouro_dir):
+		if os.path.isdir(besouro_dir+"/"+dir):
 			print dir
-			zorroDirs = subjectPath+dir+'\\.besouro\\'
-			content = mergeZorroEpisodes(zorroDirs)
+			
+			content = mergeZorroEpisodes(besouro_dir)
 			cats  = parseEpisodes(content)
 			denominator = len(cats)
 			res = countHeusticTDD(cats)
