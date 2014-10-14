@@ -35,8 +35,6 @@ def countHeusticTDD(events):
 	result = {"TF": TFCounter, "TL": TLCounter, "Refactoring": refactoringCounter}
 	return result
 
-
-
 def mergeZorroEpisodes(dir):
 	buff = []
 	for zorroDir in os.listdir(dir):
@@ -47,8 +45,6 @@ def mergeZorroEpisodes(dir):
 	return buff
 
 def main(besouro_dir):
-	#basePath = "C:\\Users\\dfucci\\Dropbox\\TOL\\PhD\\Publications\\TDD Process Conformance Relationship With Code Quality\\BSK\\"
-	#subjectPath = basePath + subject + '\\BSK\\'
 	print "========================="
 	for dir in os.listdir(besouro_dir):
 		if os.path.isdir(besouro_dir+"/"+dir):
@@ -61,7 +57,7 @@ def main(besouro_dir):
 			print "number of eposides %s" % denominator
 			if denominator > 0:
 				print "Conformance level: {0:.0f}%".format(numerator/denominator*100)
-
+				print "Refactoring episodes: %s" %res['Refactoring']
 			else:
 				print "No episodes present"
 			print "========================="
@@ -70,4 +66,4 @@ if __name__ == "__main__":
 	if (len(sys.argv)>1):
 		main(sys.argv[1])
 	else:
-		print "Usage: zorro_episode <path to besouro folder>"
+		print "Usage: zorro_episode <path to besouro folder> (Project/.besouro)"
