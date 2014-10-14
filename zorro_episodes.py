@@ -11,7 +11,7 @@ def countHeusticTDD(events):
 	#events = events[::-1]  #reverse the list AND returns it
 	TFCounter = 0
 	TLCounter = 0
-	RafactoringCounter = 0
+	refactoringCounter = 0
 	TF = False
 	TL = False
 	while(events):
@@ -25,13 +25,14 @@ def countHeusticTDD(events):
 			TF=False
 			TL=True
 		elif el == "refactoring":
-			RefactoringCounter+=1
+			refactoringCounter+=1
 		else:
 			if TF:
 				TFCounter+=1
 			else:
 				TLCounter+=1
-		result = {"TF": TFCounter, "TL": TLCounter, "Refactoring": RefactoringCounter}
+
+	result = {"TF": TFCounter, "TL": TLCounter, "Refactoring": refactoringCounter}
 	return result
 
 
