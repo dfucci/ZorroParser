@@ -10,7 +10,8 @@ def parseEpisodes(content):
 def countHeusticTDD(events):
 	#events = events[::-1]  #reverse the list AND returns it
 	TFCounter = 0
-	TLCounter = 0 
+	TLCounter = 0
+	RafactoringCounter = 0
 	TF = False
 	TL = False
 	while(events):
@@ -23,12 +24,14 @@ def countHeusticTDD(events):
 			TLCounter+=1
 			TF=False
 			TL=True
+		elif el == "refactoring":
+			RefactoringCounter+=1
 		else:
 			if TF:
 				TFCounter+=1
 			else:
 				TLCounter+=1
-	result = {"TF": TFCounter, "TL": TLCounter}
+		result = {"TF": TFCounter, "TL": TLCounter, "Refactoring": RefactoringCounter}
 	return result
 
 
@@ -49,7 +52,6 @@ def main(besouro_dir):
 	for dir in os.listdir(besouro_dir):
 		if os.path.isdir(besouro_dir+"/"+dir):
 			print dir
-			
 			content = mergeZorroEpisodes(besouro_dir)
 			cats  = parseEpisodes(content)
 			denominator = len(cats)
@@ -64,4 +66,7 @@ def main(besouro_dir):
 			print "========================="
 
 if __name__ == "__main__":
-	main(sys.argv[1])
+	if (len(sys.argv)>1):
+		main(sys.argv[1])
+	else:
+		print "Usage: zorro_episode <path to besouro folder>"
