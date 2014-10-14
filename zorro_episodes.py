@@ -1,8 +1,35 @@
 import sys
 import os
+import csv
+
+def print2csv(content):
+	with open('episodes.csv', 'wb') as f:
+		writer = csv.writer(f)
+		writer.writerows(content)
+
+def log2csv(content, starting):
+	results = []
+	lines = [l.split()[0:2] for l in content]
+	first_episode_duration = calculateDuration(starting, lines[0][0])
+	results.append([lines[0][1], round(first_episode_duration,2)])
+	for idx, line in enumerate(lines):
+		if idx < len(lines)-1:
+			start = lines[idx][0]
+			end = lines[idx+1][0]
+			duration = calculateDuration(start, end)
+			episode_type = lines[idx+1][1]
+			results.append([episode_type,round(duration,2)])
+	print2csv(results)
+
+
+def calculateDuration(start, end):
+	start = int(start)/1000
+	end = int(end)/1000
+	difference_in_seconds = end - start
+	minutes = difference_in_seconds / float(60)
+	return minutes
+
 def parseEpisodes(content):
-	# with open(path) as f:
-	# 	content = f.readlines()
 	lines = [l.split() for l in content]
 	listOfCategories = [el[1] for el in lines]
 	return listOfCategories
@@ -44,6 +71,15 @@ def mergeZorroEpisodes(dir):
 				buff= buff + f.readlines()
 	return buff
 
+def getStartingAction(besouro_dir):
+	action_timestamps = []
+	for besouroDir in os.listdir(besouro_dir):
+		action_file = besouro_dir + "/" + besouroDir + '/actions.txt'
+		if os.path.isfile(action_file):
+			with open(action_file) as f:
+				action_timestamps.append(f.readline().split()[1])
+	return min(action_timestamps)
+
 def main(besouro_dir):
 	print "========================="
 	for dir in os.listdir(besouro_dir):
@@ -51,6 +87,8 @@ def main(besouro_dir):
 			print dir
 			content = mergeZorroEpisodes(besouro_dir)
 			cats  = parseEpisodes(content)
+			starting_time = getStartingAction(besouro_dir)
+			log2csv(content, starting_time)
 			denominator = len(cats)
 			res = countHeusticTDD(cats)
 			numerator = float(res["TF"])
