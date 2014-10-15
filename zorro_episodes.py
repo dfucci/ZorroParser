@@ -75,7 +75,7 @@ def getStartingAction(besouro_dir):
 	action_timestamps = []
 	for besouroDir in os.listdir(besouro_dir):
 		action_file = besouro_dir + "/" + besouroDir + '/actions.txt'
-		if os.path.isfile(action_file):
+		if os.path.isfile(action_file) and os.stat(action_file).st_size>0:
 			with open(action_file) as f:
 				action_timestamps.append(f.readline().split()[1])
 	return min(action_timestamps)
