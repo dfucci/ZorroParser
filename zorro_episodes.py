@@ -1,5 +1,5 @@
-import sys
 #!/usr/bin/env python
+import sys
 import os
 import csv
 def print2csv(content):
@@ -10,14 +10,15 @@ def log2csv(content, starting):
     results = []
     lines = [l.split()[0:2] for l in content]
     first_episode_duration = calculateDuration(starting, lines[0][0])
+    results.append([lines[0][1], round(first_episode_duration,2)])
     for idx, line in enumerate(lines):
-        results.append([lines[0][1], round(first_episode_duration,2)])
         if idx < len(lines)-1:
             start = lines[idx][0]
             end = lines[idx+1][0]
             duration = calculateDuration(start, end)
             episode_type = lines[idx+1][1]
-            results.append([episode_type,round(duration,2)])
+            d = round(duration,2)
+            results.append([episode_type,d])
     print2csv(results)
 
 
@@ -83,7 +84,6 @@ def main(besouro_dir):
     print "========================="
     for dir in os.listdir(besouro_dir):
         if os.path.isdir(besouro_dir+"/"+dir):
-            print dir
             content = mergeZorroEpisodes(besouro_dir)
             cats  = parseEpisodes(content)
             starting_time = getStartingAction(besouro_dir)
